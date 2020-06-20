@@ -1,4 +1,4 @@
-# stepper-motor-control
+# stepper-motor control
 Based on c51.  
 
 A CNC system for three-coordinate linked stepper motor.  
