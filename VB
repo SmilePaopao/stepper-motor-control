@@ -1,0 +1,142 @@
+Private Sub Command0_Click(Index As Integer)
+MSComm1.OutBufferCount = 0   '清空发送缓冲区
+Select Case Index
+Case 11
+  MSComm1.Output = "7"
+  Label9.Caption = "G00"
+Case 12
+ MSComm1.Output = "8"
+ Label9.Caption = "G01"
+Case 13
+ MSComm1.Output = "9"
+ Label9.Caption = "G02"
+Case 14
+  MSComm1.Output = "x"
+  Label9.Caption = "G03"
+End Select
+End Sub
+
+Private Sub Command1_Click(Index As Integer) '数控
+MSComm1.OutBufferCount = 0   '清空发送缓冲区
+Select Case Index
+Case 11
+  MSComm1.Output = "7"
+Case 12
+ MSComm1.Output = "8"
+Case 13
+ MSComm1.Output = "9"
+Case 14
+  MSComm1.Output = "x"
+  Text6.Text = Label1.Caption
+Case 21
+  MSComm1.Output = "4"
+Case 22
+  MSComm1.Output = "5"
+Case 23
+  MSComm1.Output = "6"
+Case 24
+  MSComm1.Output = "y"
+  Text7.Text = Label2.Caption
+Case 31
+  MSComm1.Output = "1"
+Case 32
+  MSComm1.Output = "2"
+Case 33
+  MSComm1.Output = "3"
+Case 34
+  MSComm1.Output = "z"
+  Label9.Caption = ""
+  Label8.Caption = ""
+Case 41
+ MSComm1.Output = "0"
+Case 42
+  MSComm1.Output = "."
+  Text1.Text = Label1.Caption
+  Text4.Text = Label1.Caption
+Case 43
+  MSComm1.Output = "a"
+  Text2.Text = Label2.Caption
+  Text5.Text = Label2.Caption
+Case 44
+   MSComm1.Output = "G"
+   Text3.Text = Label3.Caption
+End Select
+End Sub
+Private Sub Command2_Click(Index As Integer)
+MSComm1.OutBufferCount = 0   '清空发送缓冲区
+Select Case Index
+Case 11
+  MSComm1.Output = "7"
+  Label9.Caption = ""
+Case 12
+  MSComm1.Output = "8"
+  Label9.Caption = ""
+Case 13
+MSComm1.Output = "9"
+  Label9.Caption = ""
+Case 14
+  MSComm1.Output = "x"
+  Label9.Caption = "数控"
+Label7.Caption = ""
+Case 21
+  MSComm1.Output = "4"
+Case 22
+  MSComm1.Output = "5"
+Case 23
+  MSComm1.Output = "6"
+Case 24
+  MSComm1.Output = "y"
+  Label8.Caption = "输入"
+  Label7.Caption = ""
+Case 31
+  MSComm1.Output = "1"
+Case 32
+  MSComm1.Output = "2"
+Case 33
+  MSComm1.Output = "3"
+Case 34
+  MSComm1.Output = "z"
+  Label8.Caption = "停止"
+Case 41
+  MSComm1.Output = "0"
+  Label7.Caption = "快速"
+Case 42
+  MSComm1.Output = "."
+  Label7.Caption = "慢速"
+Case 43
+  MSComm1.Output = "a"
+  Label8.Caption = "回原点"
+Case 44
+  MSComm1.Output = "G"
+Label8.Caption = "自动程序"
+End Select
+End Sub
+Private Sub Form_Load()  '窗体装载函数
+MSComm1.CommPort = 2 '设定 Com2 用来进行串口通讯
+If MSComm1.PortOpen = False Then
+MSComm1.PortOpen = True
+End If
+MSComm1.Settings = "9600,n,8,1"  '9600 波特率,无校验,8 位数据位,1 位停止位
+MSComm1.InputLen = 9 '设定串口读入的字符串长度为 8
+MSComm1.RThreshold = 9 '当接收寄存器达到 8 个字符时,引发接收事件 
+MSComm1.OutBufferCount = 0 '清空发送缓冲区
+MSComm1.InBufferCount = 0 '清空接收缓冲区
+End Sub
+
+Private Sub Mscomm1_OnComm() '显示接收数据函数
+Dim buffer As String '定义 buffer 为字符串
+Dim pan As String
+buffer = MSComm1.Input '将接收寄存器中的字符赋值给 buffer
+pan = Left(buffer, 1)
+Select Case pan'将接收的字符串放到相应的label框中
+Case "x"
+Label1.Caption = Right(buffer, 8)
+Label4.Caption = Val(Right(buffer, 8)) * 200
+Case "y"
+Label2.Caption = Right(buffer, 8)
+Label5.Caption = Val(Right(buffer, 8)) * 200
+Case "z"
+Label3.Caption = Right(buffer, 8)
+Label6.Caption = Val(Right(buffer, 8)) * 200
+End Select
+End Sub
